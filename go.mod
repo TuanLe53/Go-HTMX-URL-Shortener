@@ -1,4 +1,4 @@
-module myapp
+module github.com/TuanLe53/Go-HTMX-URL-Shortener
 
 go 1.23
 
