@@ -1,0 +1,80 @@
+package pages
+
+import "github.com/TuanLe53/Go-HTMX-URL-Shortener/templates/layout"
+
+templ Register(){
+    @layout.Container("Sign Up"){
+        <div class="bg-[#FFFFFF] w-3/5 h-5/6 shadow-lg rounded-b-lg">
+            <div class="w-3/5 mx-auto">
+                <h1 class="text-center text-5xl text-[#6A7187] mt-10">Create your account</h1>
+                <p class="text-center text-[#80879B] mt-5">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet magna nec nunc feugiat iaculis. Ut id sollicitudin arcu.
+                </p>
+
+                <form>
+                    <div class="mt-10 flex">
+                        <div class="w-1/2">                        
+                            <label for="first_name">FIRST NAME</label><br />
+                            <input
+                                type="text"
+                                id="first_name"
+                                name="first_name"
+                                placeholder="Enter your first name"
+                                class="border border-[#D0DDE5] w-full p-2 mt-2"
+                            />
+                        </div>
+                        <div class="w-1/2">
+                            <label for="last_name">LAST NAME</label><br />
+                            <input
+                                type="text"
+                                id="last_name"
+                                name="last_name"
+                                placeholder="Enter your last name"
+                                class="border border-[#D0DDE5] w-full p-2 mt-2"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="mt-5">
+                        <label for="email">EMAIL</label><br />
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            class="border border-[#D0DDE5] w-full p-2 mt-2"
+                        />
+                    </div>
+
+                    <div class="mt-5">
+                        <label for="password">PASSWORD</label><br />
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            class="border border-[#D0DDE5] w-full p-2 mt-2"
+                        />
+                    </div>
+
+                    <div class="mt-7">
+                        <button
+                            type="submit"
+                            class="text-center text-[#FFFFFF] bg-blue-500 w-full p-4 rounded-lg"
+                        >
+                            SIGN UP
+                        </button>
+                        <div class="text-center mt-6">                        
+                            <a
+                                href="/login"
+                                class="text-[#B2ACF3]"
+                            >
+                                LOGIN
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+}
