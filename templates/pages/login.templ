@@ -3,7 +3,77 @@ package pages
 import "github.com/TuanLe53/Go-HTMX-URL-Shortener/templates/layout"
 
 templ Login(){
-    @layout.Head(){
-        <h1>Login</h1>
+    @layout.Container("URL Shortener - login or sign up"){
+        <div class="bg-[#FFFFFF] w-3/5 h-5/6 shadow-lg rounded-b-lg">
+            <div class="w-3/5 mx-auto">
+                <h1 class="text-center text-5xl text-[#6A7187] mt-10">Login</h1>
+                <p class="text-center text-[#80879B] mt-5">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet magna nec nunc feugiat iaculis. Ut id sollicitudin arcu.
+                </p>
+                
+
+                <form>                
+                    <div class="mt-10">
+                        <label for="email">EMAIL</label><br />
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            class="border border-[#D0DDE5] w-full p-2 mt-2"
+                        />
+                    </div>
+                    <div class="mt-5">
+                        <label for="password">PASSWORD</label><br />
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            class="border border-[#D0DDE5] w-full p-2 mt-2"
+                        />
+                    </div>
+
+                    <div class="flex items-center justify-between mt-5">                
+                        <div class="flex items-center">                
+                            <input 
+                                id="remember_me" 
+                                name="remember_me" 
+                                type="checkbox" 
+                                value="true"
+                                class="w-5 h-5 mr-2"
+                            />
+                            <label 
+                                for="remember_me"
+                                class="text-[#6A7187]"
+                            >
+                                Remember me
+                            </label>
+                        </div>
+
+                        <div>
+                            <a href="/forgot-password" class="text-[#9679FF]">Forgot password?</a>
+                        </div>
+                    </div>
+
+                    <div class="mt-7">
+                        <button
+                            type="submit"
+                            class="text-center text-[#FFFFFF] bg-blue-500 w-full p-4 rounded-lg"
+                        >
+                            LOGIN
+                        </button>
+                        <div class="text-center mt-6">                        
+                            <a
+                                href="/register"
+                                class="text-[#B2ACF3]"
+                            >
+                                SIGN UP
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     }
 }
