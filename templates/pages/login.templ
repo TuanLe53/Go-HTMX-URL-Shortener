@@ -4,7 +4,7 @@ import "github.com/TuanLe53/Go-HTMX-URL-Shortener/templates/layout"
 
 templ Login(){
     @layout.Container("URL Shortener - login or sign up"){
-        <div class="bg-[#FFFFFF] w-3/5 h-5/6 shadow-lg rounded-b-lg">
+        <div class="bg-[#FFFFFF] w-3/5 h-[90%] shadow-lg rounded-b-lg">
             <div class="w-3/5 mx-auto">
                 <h1 class="text-center text-5xl text-[#6A7187] mt-10">Login</h1>
                 <p class="text-center text-[#80879B] mt-5">
@@ -12,7 +12,7 @@ templ Login(){
                 </p>
                 
 
-                <form>                
+                <form hx-post="login" hx-target="#error_message">                
                     <div class="mt-10">
                         <label for="email">EMAIL</label><br />
                         <input
@@ -21,6 +21,7 @@ templ Login(){
                             name="email"
                             placeholder="Enter your email"
                             class="border border-[#D0DDE5] w-full p-2 mt-2"
+                            required
                         />
                     </div>
                     <div class="mt-5">
@@ -31,6 +32,7 @@ templ Login(){
                             name="password"
                             placeholder="Enter your password"
                             class="border border-[#D0DDE5] w-full p-2 mt-2"
+                            required
                         />
                     </div>
 
@@ -55,6 +57,8 @@ templ Login(){
                             <a href="/forgot-password" class="text-[#9679FF]">Forgot password?</a>
                         </div>
                     </div>
+
+                    <div id="error_message" class="error_message border border-red-500 mt-5 p-2 rounded-md" role="alert"></div>
 
                     <div class="mt-7">
                         <button
