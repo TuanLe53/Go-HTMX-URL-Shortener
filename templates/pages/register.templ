@@ -4,14 +4,14 @@ import "github.com/TuanLe53/Go-HTMX-URL-Shortener/templates/layout"
 
 templ Register(){
     @layout.Container("Sign Up"){
-        <div class="bg-[#FFFFFF] w-3/5 h-5/6 shadow-lg rounded-b-lg">
+        <div class="bg-[#FFFFFF] w-3/5 h-[90%] shadow-lg rounded-b-lg">
             <div class="w-3/5 mx-auto">
                 <h1 class="text-center text-5xl text-[#6A7187] mt-10">Create your account</h1>
                 <p class="text-center text-[#80879B] mt-5">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet magna nec nunc feugiat iaculis. Ut id sollicitudin arcu.
                 </p>
 
-                <form>
+                <form hx-post="/register" hx-target="#error_message">
                     <div class="mt-10 flex">
                         <div class="w-1/2">                        
                             <label for="first_name">FIRST NAME</label><br />
@@ -21,6 +21,7 @@ templ Register(){
                                 name="first_name"
                                 placeholder="Enter your first name"
                                 class="border border-[#D0DDE5] w-full p-2 mt-2"
+                                required
                             />
                         </div>
                         <div class="w-1/2">
@@ -31,6 +32,7 @@ templ Register(){
                                 name="last_name"
                                 placeholder="Enter your last name"
                                 class="border border-[#D0DDE5] w-full p-2 mt-2"
+                                required
                             />
                         </div>
                     </div>
@@ -43,6 +45,7 @@ templ Register(){
                             name="email"
                             placeholder="Enter your email"
                             class="border border-[#D0DDE5] w-full p-2 mt-2"
+                            required
                         />
                     </div>
 
@@ -54,10 +57,13 @@ templ Register(){
                             name="password"
                             placeholder="Enter your password"
                             class="border border-[#D0DDE5] w-full p-2 mt-2"
+                            required
                         />
                     </div>
 
-                    <div class="mt-7">
+                    <div id="error_message" class="error_message border border-red-500 mt-5 p-2 rounded-md" role="alert"></div>
+
+                    <div class="mt-5">
                         <button
                             type="submit"
                             class="text-center text-[#FFFFFF] bg-blue-500 w-full p-4 rounded-lg"
