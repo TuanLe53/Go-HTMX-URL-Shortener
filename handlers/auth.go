@@ -74,20 +74,34 @@ func (h AuthHandler) LoginUser(c echo.Context) error {
 		return Render(c, components.ErrorMessage("Incorrect password."))
 	}
 
-	claims := auth.CreateJWTClaims(isUserExists.ID.String(), 15)
-	token, err := auth.GenerateToken(claims)
+	accessClaims := auth.CreateJWTClaims(isUserExists.ID.String(), 15)
+	token, err := auth.GenerateToken(accessClaims)
 	if err != nil {
 		log.Println("Error generating token:", err)
 		return Render(c, components.ErrorMessage("An error occurred, please try again later."))
 	}
 
-	cookie, err := CreateCookie("access", token, 15)
+	accessCookie, err := CreateCookie("access", token, 15)
 	if err != nil {
 		log.Println("Error creating cookie", err)
 		return Render(c, components.ErrorMessage("An error occurred, please try again later."))
 	}
 
-	c.SetCookie(cookie)
+	refreshClaims := auth.CreateJWTClaims(isUserExists.ID.String(), 60*24) // Refresh token for 1 day
+	refreshToken, err := auth.GenerateToken(refreshClaims)
+	if err != nil {
+		log.Println("Error generating refresh token:", err)
+		return Render(c, components.ErrorMessage("An error occurred, please try again later."))
+	}
+
+	refreshCookie, err := CreateCookie("refresh", refreshToken, 60*24*7)
+	if err != nil {
+		log.Println("Error creating refresh cookie", err)
+		return Render(c, components.ErrorMessage("An error occurred, please try again later."))
+	}
+
+	c.SetCookie(accessCookie)
+	c.SetCookie(refreshCookie)
 
 	c.Response().Header().Set("hx-redirect", "/")
 	return c.NoContent(http.StatusSeeOther)
