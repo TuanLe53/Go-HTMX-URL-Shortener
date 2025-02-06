@@ -17,7 +17,7 @@ func CreateJWTClaims(id string, minutes int) *JWTClaims {
 	return &JWTClaims{
 		id,
 		jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 15)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * time.Duration(minutes))),
 		},
 	}
 }
