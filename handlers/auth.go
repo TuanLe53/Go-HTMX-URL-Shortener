@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/TuanLe53/Go-HTMX-URL-Shortener/db/models"
@@ -72,6 +73,21 @@ func (h AuthHandler) LoginUser(c echo.Context) error {
 	if err != nil {
 		return Render(c, components.ErrorMessage("Incorrect password."))
 	}
+
+	claims := auth.CreateJWTClaims(isUserExists.ID.String(), 15)
+	token, err := auth.GenerateToken(claims)
+	if err != nil {
+		log.Println("Error generating token:", err)
+		return Render(c, components.ErrorMessage("An error occurred, please try again later."))
+	}
+
+	cookie, err := CreateCookie("access", token, 15)
+	if err != nil {
+		log.Println("Error creating cookie", err)
+		return Render(c, components.ErrorMessage("An error occurred, please try again later."))
+	}
+
+	c.SetCookie(cookie)
 
 	c.Response().Header().Set("hx-redirect", "/")
 	return c.NoContent(http.StatusSeeOther)
