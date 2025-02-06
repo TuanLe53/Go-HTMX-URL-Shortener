@@ -75,13 +75,13 @@ func (h AuthHandler) LoginUser(c echo.Context) error {
 	}
 
 	accessClaims := auth.CreateJWTClaims(isUserExists.ID.String(), 15)
-	token, err := auth.GenerateToken(accessClaims)
+	accessToken, err := auth.GenerateToken(accessClaims)
 	if err != nil {
 		log.Println("Error generating token:", err)
 		return Render(c, components.ErrorMessage("An error occurred, please try again later."))
 	}
 
-	accessCookie, err := CreateCookie("access", token, 15)
+	accessCookie, err := CreateCookie("access", accessToken, 15)
 	if err != nil {
 		log.Println("Error creating cookie", err)
 		return Render(c, components.ErrorMessage("An error occurred, please try again later."))
