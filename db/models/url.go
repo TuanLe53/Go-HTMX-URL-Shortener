@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"time"
 
 	"github.com/TuanLe53/Go-HTMX-URL-Shortener/db"
@@ -41,4 +42,20 @@ func CreateShortURL(long_url string, short_code string, created_by uuid.UUID, ex
 	}
 
 	return &url, nil
+}
+
+func GetShortURL(short_code string) (*URL, error) {
+	db := db.DB()
+
+	var url URL
+	result := db.Where("short_code = ?", short_code).First(&url)
+	if result.Error != nil {
+		if result.Error == gorm.ErrRecordNotFound {
+			return nil, nil
+		}
+
+		return nil, errors.New("error looking for short URL")
+	} else {
+		return &url, nil
+	}
 }
