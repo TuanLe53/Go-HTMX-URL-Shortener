@@ -1,0 +1,10 @@
+package pages
+
+import "github.com/TuanLe53/Go-HTMX-URL-Shortener/templates/components"
+import "github.com/TuanLe53/Go-HTMX-URL-Shortener/templates/layout"
+
+templ Home(){
+    @layout.Container("Shorten URL"){
+        @components.ShortenURL()
+    }
+}

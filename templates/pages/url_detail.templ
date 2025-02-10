@@ -1,0 +1,23 @@
+package pages
+
+import "github.com/TuanLe53/Go-HTMX-URL-Shortener/templates/layout"
+import "github.com/TuanLe53/Go-HTMX-URL-Shortener/db/models"
+import "fmt"
+
+templ URLDetail(url *models.URL){
+    @layout.Container("URL Detail"){
+        <div>
+            <h1>URL Detail</h1>
+            <p>Original URL: {url.Long_URL}</p>
+            <button type="button" onclick={templ.JSFuncCall("copyURL", fmt.Sprintf("localhost:5151/short/%s", url.Short_Code))}>
+                <span class="material-icons">content_copy</span>
+            </button>
+
+            <script>
+                function copyURL(short_url) {
+                    navigator.clipboard.writeText(short_url);
+                }
+            </script>
+        </div>
+    }
+}
