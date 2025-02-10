@@ -60,9 +60,9 @@ func (h URLHandler) ShortenURL(c echo.Context) error {
 }
 
 func (h URLHandler) URLDetail(c echo.Context) error {
-	url_id := c.Param("url_id")
+	url_short_code := c.Param("short_code")
 
-	url, err := models.GetShortURL(url_id)
+	url, err := models.GetURLDetail(url_short_code)
 	if err != nil {
 		log.Println("Error getting short URL:", err)
 		return Render(c, components.ErrorMessage("Something went wrong. Please try again later."))
@@ -72,4 +72,19 @@ func (h URLHandler) URLDetail(c echo.Context) error {
 	}
 
 	return Render(c, pages.URLDetail(url))
+}
+
+func (h URLHandler) GoToURL(c echo.Context) error {
+	url_short_code := c.Param("short_code")
+
+	url, err := models.GetURLDetail(url_short_code)
+	if err != nil {
+		log.Println("Error getting short URL:", err)
+		return Render(c, components.ErrorMessage("Something went wrong. Please try again later."))
+	}
+	if url == nil {
+		return Render(c, components.ErrorMessage("URL not found"))
+	}
+
+	return c.Redirect(http.StatusMovedPermanently, url.Long_URL)
 }
