@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"fmt"
 	"log"
+	"net/http"
 	"strconv"
 	"time"
 
@@ -53,5 +55,21 @@ func (h URLHandler) ShortenURL(c echo.Context) error {
 		return Render(c, components.ErrorMessage("Something went wrong. Please try again later."))
 	}
 
-	return Render(c, components.ErrorMessage("Suppose to me successful message."))
+	c.Response().Header().Set("hx-redirect", fmt.Sprintf("/url/%s", short_code))
+	return c.NoContent(http.StatusSeeOther)
+}
+
+func (h URLHandler) URLDetail(c echo.Context) error {
+	url_id := c.Param("url_id")
+
+	url, err := models.GetShortURL(url_id)
+	if err != nil {
+		log.Println("Error getting short URL:", err)
+		return Render(c, components.ErrorMessage("Something went wrong. Please try again later."))
+	}
+	if url == nil {
+		return Render(c, components.ErrorMessage("URL not found"))
+	}
+
+	return Render(c, pages.URLDetail(url))
 }
