@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"crypto/rand"
+	"encoding/base64"
 	"fmt"
 	"net/http"
 	"regexp"
@@ -36,4 +38,13 @@ func CreateCookie(name, value string, minutes int) (*http.Cookie, error) {
 		// Domain:   domain,
 		HttpOnly: true,
 	}, nil
+}
+
+func GenerateShortCode(length int) (string, error) {
+	b := make([]byte, length)
+	_, err := rand.Read(b)
+	if err != nil {
+		return "", err
+	}
+	return base64.URLEncoding.EncodeToString(b), nil
 }
