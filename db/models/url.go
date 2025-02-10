@@ -44,7 +44,7 @@ func CreateShortURL(long_url string, short_code string, created_by uuid.UUID, ex
 	return &url, nil
 }
 
-func GetShortURL(short_code string) (*URL, error) {
+func GetURLDetail(short_code string) (*URL, error) {
 	db := db.DB()
 
 	var url URL
@@ -55,7 +55,7 @@ func GetShortURL(short_code string) (*URL, error) {
 		}
 
 		return nil, errors.New("error looking for short URL")
-	} else {
-		return &url, nil
 	}
+
+	return &url, nil
 }
