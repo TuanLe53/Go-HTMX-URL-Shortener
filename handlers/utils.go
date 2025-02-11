@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/http"
+	"net/url"
 	"regexp"
 	"time"
 
@@ -47,4 +48,9 @@ func GenerateShortCode(length int) (string, error) {
 		return "", err
 	}
 	return base64.URLEncoding.EncodeToString(b), nil
+}
+
+func IsValidURL(str string) bool {
+	parsedURL, err := url.ParseRequestURI(str)
+	return err == nil && parsedURL.Scheme != "" && parsedURL.Host != ""
 }
