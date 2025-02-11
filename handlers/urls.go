@@ -28,6 +28,9 @@ func (h URLHandler) ShortenURL(c echo.Context) error {
 	}
 
 	url := c.FormValue("url")
+	if !IsValidURL(url) {
+		return Render(c, components.ErrorMessage("Invalid URL"))
+	}
 
 	expire, err := strconv.Atoi(c.FormValue("expired_at"))
 	if err != nil {
