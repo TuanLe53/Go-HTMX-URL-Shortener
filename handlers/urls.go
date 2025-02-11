@@ -86,5 +86,11 @@ func (h URLHandler) GoToURL(c echo.Context) error {
 		return Render(c, components.ErrorMessage("URL not found"))
 	}
 
+	_, err = models.CreateURLClick(url, c.RealIP(), c.Request().UserAgent())
+	if err != nil {
+		log.Println("Error creating URL click:", err)
+		return Render(c, components.ErrorMessage("Something went wrong. Please try again later."))
+	}
+
 	return c.Redirect(http.StatusMovedPermanently, url.Long_URL)
 }
