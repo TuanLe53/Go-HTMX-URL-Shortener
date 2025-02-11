@@ -3,4 +3,4 @@ run:
 	@go run cmd/main.go
 
 dev:
-	@templ generate --watch --proxy="http://localhost:5050" --cmd="go run cmd/main.go"
+	@templ generate --watch --proxy="http://localhost:5151" --cmd="go run cmd/main.go"
