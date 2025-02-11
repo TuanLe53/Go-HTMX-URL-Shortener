@@ -2,6 +2,8 @@ package models
 
 import (
 	"errors"
+	"fmt"
+	"log"
 	"time"
 
 	"github.com/TuanLe53/Go-HTMX-URL-Shortener/db"
@@ -58,4 +60,35 @@ func GetURLDetail(short_code string) (*URL, error) {
 	}
 
 	return &url, nil
+}
+
+func CreateURLClick(url *URL, ip_address string, user_agent string) (*URLClick, error) {
+	db := db.DB()
+
+	click := URLClick{
+		URL_ID:     url.ID,
+		IP_Address: ip_address,
+		User_Agent: user_agent,
+	}
+
+	err := db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&click).Error; err != nil {
+			log.Printf("Failed to create URLClick record: %v", err)
+			return fmt.Errorf("could not create URLClick record: %v", err)
+		}
+
+		url.Clicks++
+		if err := tx.Save(&url).Error; err != nil {
+			log.Printf("Failed to save URL record: %v", err)
+			return fmt.Errorf("could not save URL record: %v", err)
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &click, nil
 }
