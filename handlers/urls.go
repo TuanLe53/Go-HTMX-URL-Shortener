@@ -97,3 +97,25 @@ func (h URLHandler) GoToURL(c echo.Context) error {
 
 	return c.Redirect(http.StatusMovedPermanently, url.Long_URL)
 }
+
+func (h URLHandler) DeleteURL(c echo.Context) error {
+	url_short_code := c.Param("short_code")
+
+	url, err := models.GetURLDetail(url_short_code)
+	if err != nil {
+		log.Println("Error getting short URL:", err)
+		return Render(c, components.ErrorMessage("Something went wrong. Please try again later."))
+	}
+	if url == nil {
+		return Render(c, components.ErrorMessage("URL not found"))
+	}
+
+	err = models.DeleteURL(url)
+	if err != nil {
+		log.Println("Error deleting url", err)
+		return Render(c, components.ErrorMessage("Something went wrong. Please try again later."))
+	}
+
+	c.Response().Header().Set("hx-redirect", "/my/urls")
+	return c.NoContent(http.StatusSeeOther)
+}
