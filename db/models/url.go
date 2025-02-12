@@ -92,3 +92,27 @@ func CreateURLClick(url *URL, ip_address string, user_agent string) (*URLClick, 
 
 	return &click, nil
 }
+
+func DeleteURL(url *URL) error {
+	db := db.DB()
+
+	err := db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Where("url_id = ?", url.ID).Unscoped().Delete(&URLClick{}).Error; err != nil {
+			log.Printf("Failed to delete url clicks: %v", err)
+			return fmt.Errorf("Could not delete url clicks: %v", err)
+		}
+
+		if err := tx.Unscoped().Delete(&url).Error; err != nil {
+			log.Printf("Failed to delete url record: %v", err)
+			return fmt.Errorf("Could not delete url record: %v", err)
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
