@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/TuanLe53/Go-HTMX-URL-Shortener/db/models"
 	"github.com/TuanLe53/Go-HTMX-URL-Shortener/handlers"
 	"github.com/TuanLe53/Go-HTMX-URL-Shortener/pkg/auth"
 	"github.com/TuanLe53/Go-HTMX-URL-Shortener/templates/components"
@@ -74,5 +75,32 @@ func AuthenticateJWT(next echo.HandlerFunc) echo.HandlerFunc {
 
 		return next(c)
 
+	}
+}
+
+func IsURLOwner(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		user, ok := c.Get("user").(jwt.MapClaims)
+		if !ok {
+			return handlers.Render(c, components.ErrorMessage("Something went wrong. Please try again later."))
+		}
+		user_id := user["id"].(string)
+
+		url_short_code := c.Param("short_code")
+
+		url, err := models.GetURLDetail(url_short_code)
+		if err != nil {
+			log.Println("Error getting short URL:", err)
+			return handlers.Render(c, components.ErrorMessage("Something went wrong. Please try again later."))
+		}
+		if url == nil {
+			return handlers.Render(c, components.ErrorMessage("URL not found"))
+		}
+
+		if user_id != url.User_ID.String() {
+			return handlers.Render(c, components.AccessDenied())
+		}
+
+		return next(c)
 	}
 }
