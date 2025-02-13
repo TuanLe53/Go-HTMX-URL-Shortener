@@ -58,7 +58,7 @@ func (h URLHandler) ShortenURL(c echo.Context) error {
 		return Render(c, components.ErrorMessage("Something went wrong. Please try again later."))
 	}
 
-	c.Response().Header().Set("hx-redirect", fmt.Sprintf("/url/%s", short_code))
+	c.Response().Header().Set("hx-redirect", fmt.Sprintf("/my/url/%s", short_code))
 	return c.NoContent(http.StatusSeeOther)
 }
 
