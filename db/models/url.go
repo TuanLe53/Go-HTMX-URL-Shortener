@@ -116,3 +116,16 @@ func DeleteURL(url *URL) error {
 
 	return nil
 }
+
+func GetUrlsByUser(user_id uuid.UUID) ([]URL, error) {
+	db := db.DB()
+
+	var urls []URL
+
+	result := db.Where("user_id = ?", user_id).Find(&urls)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return urls, nil
+}
