@@ -18,7 +18,23 @@ import (
 type URLHandler struct{}
 
 func (h URLHandler) UserURLs(c echo.Context) error {
-	return Render(c, pages.UserUrls())
+	user, ok := c.Get("user").(jwt.MapClaims)
+	if !ok {
+		return Render(c, components.ErrorMessage("Something went wrong. Please try again later."))
+	}
+
+	user_id := user["id"].(string)
+	created_by, err := uuid.Parse(user_id)
+	if err != nil {
+		log.Println("Error parsing UUID:", err)
+		return Render(c, components.ErrorMessage("Something went wrong. Please try again later."))
+	}
+
+	urls, err := models.GetUrlsByUser(created_by)
+
+	log.Println(urls)
+
+	return Render(c, pages.UserUrls(urls))
 }
 
 func (h URLHandler) ShortenURL(c echo.Context) error {
