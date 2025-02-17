@@ -1,0 +1,9 @@
+package components
+
+import "github.com/TuanLe53/Go-HTMX-URL-Shortener/db/models"
+
+templ UrlCard(url models.URL){
+    <li>
+        <p>Long URL: {url.Long_URL}</p>
+    </li>
+}
