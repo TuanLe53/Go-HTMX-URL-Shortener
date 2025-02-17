@@ -13,6 +13,13 @@ templ URLDetail(url *models.URL){
                 <span class="material-icons">content_copy</span>
             </button>
 
+            <button
+                type="button"
+                hx-delete={fmt.Sprintf("/my/url/%s", url.Short_Code)}
+            >
+                Delete
+            </button>
+
             <script>
                 function copyURL(short_url) {
                     navigator.clipboard.writeText(short_url);
