@@ -1,11 +1,20 @@
 package pages
 
 import "github.com/TuanLe53/Go-HTMX-URL-Shortener/templates/layout"
+import "github.com/TuanLe53/Go-HTMX-URL-Shortener/db/models"
+import "github.com/TuanLe53/Go-HTMX-URL-Shortener/templates/components"
 
-templ UserUrls(){
+templ UserUrls(urls []models.URL){
     @layout.Container("My URLs"){
         <div>
             <p>My URLs</p>
+
+            <ul>
+                for _, url := range urls{
+                    @components.UrlCard(url)
+                }
+            </ul>
+
         </div>
     }
 }
