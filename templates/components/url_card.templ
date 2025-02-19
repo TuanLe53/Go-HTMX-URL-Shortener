@@ -1,9 +1,20 @@
 package components
 
-import "github.com/TuanLe53/Go-HTMX-URL-Shortener/db/models"
+import (
+    "github.com/TuanLe53/Go-HTMX-URL-Shortener/db/models"
+    "strconv"
+	"fmt"
+)
 
 templ UrlCard(url models.URL){
-    <li>
-        <p>Long URL: {url.Long_URL}</p>
+    <li class="p-2 mb-5 bg-[#A3A3D1] rounded-md">
+        <div class="flex justify-between text-[#FFFFFF] border-b border-[#D1D1E0]">        
+            <p>#ID: {url.ID.String()}</p>
+            <a class="text-[#6A5ACD]" href={templ.URL(fmt.Sprintf("/my/url/%s", url.Short_Code))}>Detail</a>
+        </div>
+        <div class="flex justify-between text-[#FFFFFF]">
+            <p>Long URL: {url.Long_URL}</p>
+            <p>Visits: {strconv.Itoa(url.Clicks)}</p>
+        </div>
     </li>
 }
