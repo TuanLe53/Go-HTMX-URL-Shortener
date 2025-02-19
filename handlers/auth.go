@@ -11,6 +11,11 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+const (
+	AccessTokenExpiry  = 15
+	RefreshTokenExpiry = 60 * 24
+)
+
 type AuthHandler struct{}
 
 func (h AuthHandler) LoginPage(c echo.Context) error {
@@ -74,27 +79,27 @@ func (h AuthHandler) LoginUser(c echo.Context) error {
 		return Render(c, components.ErrorMessage("Incorrect password."))
 	}
 
-	accessClaims := auth.CreateJWTClaims(isUserExists.ID.String(), 15)
+	accessClaims := auth.CreateJWTClaims(isUserExists.ID.String(), AccessTokenExpiry)
 	accessToken, err := auth.GenerateToken(accessClaims)
 	if err != nil {
 		log.Println("Error generating token:", err)
 		return Render(c, components.ErrorMessage("An error occurred, please try again later."))
 	}
 
-	accessCookie, err := CreateCookie("access", accessToken, 15)
+	accessCookie, err := CreateCookie("access", accessToken, AccessTokenExpiry)
 	if err != nil {
 		log.Println("Error creating cookie", err)
 		return Render(c, components.ErrorMessage("An error occurred, please try again later."))
 	}
 
-	refreshClaims := auth.CreateJWTClaims(isUserExists.ID.String(), 60*24) // Refresh token for 1 day
+	refreshClaims := auth.CreateJWTClaims(isUserExists.ID.String(), RefreshTokenExpiry) // Refresh token for 1 day
 	refreshToken, err := auth.GenerateToken(refreshClaims)
 	if err != nil {
 		log.Println("Error generating refresh token:", err)
 		return Render(c, components.ErrorMessage("An error occurred, please try again later."))
 	}
 
-	refreshCookie, err := CreateCookie("refresh", refreshToken, 60*24*7)
+	refreshCookie, err := CreateCookie("refresh", refreshToken, RefreshTokenExpiry)
 	if err != nil {
 		log.Println("Error creating refresh cookie", err)
 		return Render(c, components.ErrorMessage("An error occurred, please try again later."))
