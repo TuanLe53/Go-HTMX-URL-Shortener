@@ -5,6 +5,12 @@ import "github.com/TuanLe53/Go-HTMX-URL-Shortener/templates/layout"
 
 templ Home(){
     @layout.Container("Shorten URL"){
-        @components.ShortenURL()
+        <div class="mt-20">
+            <h1 class="text-5xl text-center mb-5">Shorten URL</h1>
+            @components.ShortenURL()
+            <div class="w-full bg-blue-300">
+                <a class="text-center" href="/my/urls">Your Short URLs list</a>
+            </div>
+        </div>
     }
 }
